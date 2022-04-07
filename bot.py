@@ -17,6 +17,7 @@ bot.
 
 import logging
 
+from datetime import datetime
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 # Enable logging
@@ -40,6 +41,10 @@ def help(update, context):
     """Send a message when the command /help is issued."""
     update.message.reply_text('Help!')
 
+def time(update, context):
+    """Send current time"""
+    current_time = datetime.now().strftime("%H:%M:%S")
+    update.message.reply_text(current_time)
 
 def echo(update, context):
     """Echo the user message."""
@@ -74,6 +79,7 @@ def main():
     # on different commands - answer in Telegram
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
+    dp.add_handler(CommandHandler("time", time))
 
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.text, echo))
