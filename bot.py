@@ -17,7 +17,7 @@ bot.
 
 import logging
 
-from datetime import datetime
+from datetime import datetime, date
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 # Enable logging
@@ -29,13 +29,11 @@ logger = logging.getLogger(__name__)
 """ SETTINGS """
 TOKEN_FILE_NAME = 'bot_token.txt'
 
-
 # Define a few command handlers. These usually take the two arguments update and
 # context. Error handlers also receive the raised TelegramError object in error.
 def start(update, context):
     """Send a message when the command /start is issued."""
     update.message.reply_text('Hi!')
-
 
 def help(update, context):
     """Send a message when the command /help is issued."""
@@ -46,10 +44,14 @@ def time(update, context):
     current_time = datetime.now().strftime("%H:%M:%S")
     update.message.reply_text(current_time)
 
+def date(update, context):
+    """Send current date"""
+    current_date = datetime.now().strftime("%x")
+    update.message.reply_text(current_date)
+
 def echo(update, context):
     """Echo the user message."""
     update.message.reply_text(update.message.text)
-
 
 def error(update, context):
     """Log Errors caused by Updates."""
@@ -80,6 +82,7 @@ def main():
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("time", time))
+    dp.add_handler(CommandHandler("date", date))
 
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.text, echo))
